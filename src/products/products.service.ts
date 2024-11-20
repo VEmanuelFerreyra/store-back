@@ -38,17 +38,43 @@ export class ProductsService {
     return await this.productRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number):Promise<Product> {
     const productExist = await this.productRepository.findOneBy({id});
     if(!productExist) throw new NotFoundException(`the product with id ${id} does not exist`);
     return productExist;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto):Promise<Product> {
+    const {category, ...rest} = updateProductDto;
+
+    //verifico que el producto no tenga un nombre que ya este en otro producto
+    const existingProduct = await this.productRepository.findOne({where: {name: updateProductDto.name}});
+    if(existingProduct && existingProduct.id !== id) throw new ConflictException('the product name is already exist');
+    
+    //verifico si existe el producto que se desea modificar y lo modifico
+    const product = await this.findOne(id);
+
+    const categoryObject = await this.categoryRepository.findOne({ where: { id: updateProductDto.category } });
+
+    if(!categoryObject) throw new NotFoundException(`the category with id ${updateProductDto.category} does not exist`)
+
+    const updatedProduct = {
+      category: categoryObject,
+      ...rest
+    }
+
+    const finalProduct = this.productRepository.merge(product, updatedProduct);
+
+    try {
+      return this.productRepository.save(finalProduct)
+    } catch (error) {
+      throw new InternalServerErrorException('An error occurred while updating the product')
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number):Promise<{ message: string }> {
+    const product = await this.findOne(id);
+    await this.productRepository.remove(product);
+    return { message: `Product with ID ${id} has been removed.` };
   }
 }
