@@ -30,6 +30,7 @@ import { ConfigModule } from '@nestjs/config';
       database: process.env.DB_NAME,
       entities: [User, Product, Order, Category, OrderDetail],
       synchronize: true,
+      //dropSchema: true
     }),
   ],
   controllers: [],

@@ -17,6 +17,6 @@ export class OrderDetail {
   @Column()
   quantity: number;
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 2 })
   priceAtPurchase: number;
 }

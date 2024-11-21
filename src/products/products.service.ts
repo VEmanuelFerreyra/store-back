@@ -9,8 +9,8 @@ import { Category } from 'src/categories/entities/category.entity';
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectRepository(Product) private productRepository: Repository<Product>,
-    @InjectRepository(Category) private categoryRepository: Repository<Category>
+    @InjectRepository(Product) private readonly productRepository: Repository<Product>,
+    @InjectRepository(Category) private readonly categoryRepository: Repository<Category>
   ) { }
 
   async create(createProductDto: CreateProductDto) {

@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
-  constructor(@InjectRepository(Category) private categoryRepository: Repository<Category>) { }
+  constructor(@InjectRepository(Category) private readonly categoryRepository: Repository<Category>) { }
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const categoryExist = await this.categoryRepository.findOne({ where: { name: createCategoryDto.name } });
