@@ -11,6 +11,7 @@ import { Order } from './orders/entities/order.entity';
 import { Category } from './categories/entities/category.entity';
 import { OrderDetail } from './order-details/entities/order-detail.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     CategoriesModule,
     OrdersModule,
     OrderDetailsModule,
+    AuthModule,
 
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -32,6 +34,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
       //dropSchema: true
     }),
+    
   ],
   controllers: [],
   providers: [],

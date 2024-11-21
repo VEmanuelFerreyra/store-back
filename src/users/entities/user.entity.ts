@@ -1,5 +1,5 @@
 import { Order } from 'src/orders/entities/order.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, DeleteDateColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -9,17 +9,17 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true , nullable: false})
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
-  @Column()
-  confirmPassword: string;
-
-  @Column()
+  @Column({ default: false })
   isAdmin: boolean;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
