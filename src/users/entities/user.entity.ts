@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Order } from 'src/orders/entities/order.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, DeleteDateColumn } from 'typeorm';
 
@@ -13,10 +14,11 @@ export class User {
   email: string;
 
   @Column({ nullable: false })
+  @Exclude()
   password: string;
 
-  @Column({ default: false })
-  isAdmin: boolean;
+  @Column({ default: 'user' })
+  role: string;
 
   @DeleteDateColumn()
   deletedAt: Date;

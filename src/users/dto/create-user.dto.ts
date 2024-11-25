@@ -26,6 +26,6 @@ export class CreateUserDto {
     @MaxLength(12)
     confirmPassword: string;
 
-    @IsBoolean()
-    isAdmin: boolean;
+    @IsString()
+    role: string;
 }

@@ -26,7 +26,7 @@ export class UsersService {
       throw new UnauthorizedException('Incorrect email or password');
     }
 
-    const payload = { email: userExist.email }
+    const payload = { email: userExist.email, role: userExist.role }
 
     const token = await this.jwtService.signAsync(payload);
 
@@ -95,5 +95,9 @@ export class UsersService {
     // Elimino el usuario
     await this.usersRepository.remove(user);
     return { message: `User with ID ${id} removed successfully` };
+  }
+
+  async profile({email, role}: {email:string, role: string}){
+    return await this.usersRepository.findOneBy({email});
   }
 }
