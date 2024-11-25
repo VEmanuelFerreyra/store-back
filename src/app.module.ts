@@ -12,17 +12,13 @@ import { Category } from './categories/entities/category.entity';
 import { OrderDetail } from './order-details/entities/order-detail.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    ProductsModule,
-    UsersModule,
-    CategoriesModule,
-    OrdersModule,
-    OrderDetailsModule,
-    AuthModule,
-
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -34,6 +30,18 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
       //dropSchema: true
     }),
+    ProductsModule,
+    UsersModule,
+    CategoriesModule,
+    OrdersModule,
+    OrderDetailsModule,
+    AuthModule,
+    
+    JwtModule.register({
+      global:true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' }
+    })
     
   ],
   controllers: [],
